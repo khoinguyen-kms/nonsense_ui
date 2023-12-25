@@ -1,13 +1,14 @@
-import { BrowserRouter } from 'react-router-dom'
-import './App.css'
-import RouteFactory from './configs/routes/RouteFactory'
-import routes from './configs/routes'
+import './App.css';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import RoutesFactory from './configs/routes';
 
 function App() {
   return (
-    <BrowserRouter>
-      <RouteFactory routeConfig={routes} />
-    </BrowserRouter>
+    <>
+      <RoutesFactory />
+      <ToastContainer autoClose={1500} />
+    </>
   )
 }
 

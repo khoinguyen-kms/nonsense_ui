@@ -1,24 +1,32 @@
 import { useAtom } from "jotai";
 import { ChangeEvent, FC, MouseEvent } from "react";
-import { authAtom } from "../atoms/authAtom";
-import { POST } from "../utils/api";
-import { AxiosResponse } from "axios";
+import { toast } from "react-toastify";
+import { authAtom } from "../../atoms/authAtom";
+import { POST } from "../../utils/api";
+import { saveToLocalStorage } from "../../utils/localStorageUtils";
+import { useNavigate } from "react-router-dom";
 
-export const LoginForm: FC = () => {
+const LoginPage: FC = () => {
 
   const [credentialsPayload, setCredentialsPayload] = useAtom(authAtom);
+  const navigate = useNavigate();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>, key: string) => {
     setCredentialsPayload((change) => ({ ...change, [key]: e.target.value }));
   }
 
-  const handleLogin = async (e: MouseEvent<HTMLButtonElement>) => {
+  const handleLogin = async (e: MouseEvent<HTMLButtonElement>): Promise<void> => {
     e.preventDefault();
 
-    const response: AxiosResponse = await POST('/login', credentialsPayload);
+    const response: any = await POST('/login', credentialsPayload);
+    if (response.statusCode === 200) {
+      const { accessToken, refreshToken } = response.data;
+      saveToLocalStorage('accessToken', accessToken);
+      saveToLocalStorage('refreshToken', refreshToken);
 
-    console.log(response.data);
-    return response;
+      navigate('/')
+      toast.success("Login successfully");
+    }
   }
 
   return (
@@ -68,3 +76,5 @@ export const LoginForm: FC = () => {
     </>
   )
 }
+
+export default LoginPage;

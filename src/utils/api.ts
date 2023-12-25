@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios"
+import { toast } from "react-toastify"
 
 const API_URL = "http://localhost:3000"
 export type RequestPayload = {
@@ -32,7 +33,9 @@ const handleRequest = async<T>(payload: RequestPayload): Promise<T> => {
     const response: AxiosResponse<T> = await axiosInstance[method](endpoint, data);
     return response.data;
   } catch (error: any) {
-    throw error.response?.data || error;
+    toast.error(error.response.data.message);
+    const message = error.response?.data.message || error;
+    throw new Error(message);
   }
 }
 

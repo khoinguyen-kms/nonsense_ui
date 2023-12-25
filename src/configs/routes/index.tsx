@@ -1,17 +1,12 @@
-import { createElement } from "react";
-import { RouteConfig } from "./types";
-import { LoginForm } from "../../components/Login";
-import { HomePage } from "../../components/Home";
+import { BrowserRouter } from "react-router-dom"
+import { AppRoutes } from "./app.routes"
 
-const routes: RouteConfig[] = [
-  {
-    path: '/',
-    element: createElement(HomePage)
-  },
-  {
-    path: '/login',
-    element: createElement(LoginForm)
-  }
-]
+const RoutesFactory = () => {
+  return (
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+  )
+}
 
-export default routes;
+export default RoutesFactory;
